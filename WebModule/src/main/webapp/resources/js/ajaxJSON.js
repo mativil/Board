@@ -39,7 +39,7 @@ function clearBoard() {
 //отправка реального ниибацца крутого массива JSON
 function submitRealJSON(JSONArray) {
 
-    console.log(JSONArray);
+    //console.log(JSONArray);
     $.ajax({
         url: '/board/api',
         data: JSONArray,
@@ -54,4 +54,11 @@ function submitRealJSON(JSONArray) {
             //$("#result").append(info[1].clientId + "<br>");
         }
     });
+}
+
+function generateRandomMacAddress()
+{
+    return "XX:XX:XX:XX:XX:XX".replace(/X/g, function() {
+        return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+    })
 }

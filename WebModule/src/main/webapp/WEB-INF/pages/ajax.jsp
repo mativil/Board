@@ -58,7 +58,7 @@
     var isStop = true;
     var intervalId;
     //ќбъ€вл€ем пользовател€ и массив дл€ отправки
-    var clientID = "testUser";
+    var clientID = generateRandomMacAddress();
     var JSONPostArray = [];
 
 
@@ -139,13 +139,15 @@
 
 
      function addToJSONArray(clientID, type, x, y) {
-         console.log(type + x + y);
+         //console.log(type + x + y);
+
+         var result = toRecentCoord(canvas.width, canvas.height, x, y);
 
          var value = {
              "clientId": clientID,
              "type": type,
-             "x": x.toString(),
-             "y": y.toString()
+             "x": result.x,
+             "y": result.y
          }
          JSONPostArray.push(
              value
@@ -160,6 +162,42 @@
         };
     }
 
+    function toRecentCoord(canvasWidth, canvasHeight, x, y)
+    {
+        return{
+            x: x/canvasWidth ,
+            y: y/canvasHeight
+        };
+    }
+
+    function toCanvasCoord(canvasWidth, canvasHeight, x, y)
+    {
+        return{
+            x: x*canvasWidth ,
+            y: y*canvasHeight
+        };
+    }
+
+    function paintAnotherOne(dataArray)
+    {
+        for(i in dataArray)
+        {
+            var item = dataArray[i];
+            var result = toCanvasCoord(canvas.width, canvas.height, item.x, item.y);
+            console.log(item);
+            switch (item.type)
+            {
+                case "START":
+                    context.moveTo(result.x, result.y);
+                    break;
+                case "MOVE":
+                    context.lineTo(result.x, result.y);
+                    context.stroke();
+                    break;
+                default: break;
+            }
+        }
+    }
 </script>
 
 </html>

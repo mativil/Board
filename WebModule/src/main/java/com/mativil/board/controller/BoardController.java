@@ -1,12 +1,12 @@
-package controller;
+package com.mativil.board.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import model.DrawInfo;
+import com.mativil.board.model.DrawInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import com.mativil.board.service.BoardInfoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,9 @@ public class BoardController {
         return "hello";
     }
     */
+    @Autowired
+    private BoardInfoService boardInfoService;
+
     List<DrawInfo> list = new ArrayList<DrawInfo>();
 
     @RequestMapping("/")
@@ -40,13 +43,13 @@ public class BoardController {
     @RequestMapping(value="/board/api", method=RequestMethod.POST,
             produces = "application/json", consumes = "application/json")
     @ResponseBody public List<DrawInfo> getJSONData(@RequestBody List<DrawInfo> info) {
-        list.addAll(info);
         //info.get(0).setClientId("Vasya");
-            return list;
+            List<DrawInfo> result = boardInfoService.setDataAndGetResult(info);
+            return result;
     }
 
     @RequestMapping(value="/board/clear")
-    public void getJSONData() {
+    public void clearData() {
         list.clear();
     }
 }

@@ -1,4 +1,4 @@
-package model;
+package com.mativil.board.model;
 
 /**
  * Created by Ivan on 16.02.2017.
