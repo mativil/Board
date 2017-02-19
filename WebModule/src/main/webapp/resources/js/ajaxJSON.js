@@ -29,8 +29,16 @@ function submitJSON() {
     });
 }
 
+function clearBoard() {
+
+    $.ajax({
+        url: '/board/clear'
+    });
+}
+
 //отправка реального ниибацца крутого массива JSON
 function submitRealJSON(JSONArray) {
+
     console.log(JSONArray);
     $.ajax({
         url: '/board/api',
@@ -42,7 +50,8 @@ function submitRealJSON(JSONArray) {
             xhr.setRequestHeader("Content-Type", "application/json");
         },
         success: function (info) {
-
+            paintAnotherOne(info);
+            //$("#result").append(info[1].clientId + "<br>");
         }
     });
 }

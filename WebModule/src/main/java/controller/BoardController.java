@@ -1,11 +1,14 @@
 package controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import model.DrawInfo;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +22,7 @@ public class BoardController {
         return "hello";
     }
     */
+    List<DrawInfo> list = new ArrayList<DrawInfo>();
 
     @RequestMapping("/")
     public ModelAndView helloAjaxTest() {
@@ -34,8 +38,15 @@ public class BoardController {
     }
 
     @RequestMapping(value="/board/api", method=RequestMethod.POST,
-            consumes = "application/json")
-    @ResponseBody public DrawInfo getJSONData(@RequestBody List<DrawInfo> info) {
-            return info.get(0);
+            produces = "application/json", consumes = "application/json")
+    @ResponseBody public List<DrawInfo> getJSONData(@RequestBody List<DrawInfo> info) {
+        list.addAll(info);
+        //info.get(0).setClientId("Vasya");
+            return list;
+    }
+
+    @RequestMapping(value="/board/clear")
+    public void getJSONData() {
+        list.clear();
     }
 }

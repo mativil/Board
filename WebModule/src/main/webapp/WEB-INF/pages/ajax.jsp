@@ -12,7 +12,6 @@
         {
             border: 4px double black;
             background: white; /* Цвет фона */
-            padding: 10px; /* Поля вокруг текста */
         }
 
 
@@ -34,9 +33,10 @@
     <br /><span id="mouseXYSpan"></span>
     </div>
     <br> <br> ${message} 123<br> <br>
-
-    <input type="button" id = "stopButton" type="button" value="Хватит!!!" onClick="StopOrContinue()"></button>
     <input type="button" id = "clearButton" type="button" value="Очистить" onClick="ClearCanvas()"></button>
+    <br>
+    <input type="button" id = "stopButton" type="button" value="Хватит!!!" onClick="StopOrContinue()"></button>
+    <input type="button" id = "singleAjaxButton" type="button" value="Ну мам, ну один Ajax запросик" onClick="SingleAjaxQuery()"></button>
     <br>
     <br>
     <div id="result"></div>
@@ -52,12 +52,13 @@
         src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
 <script src="../../resources/js/ajaxJSON.js"></script>
-<script src="../../resources/js/Board.js"></script>
+<script src="../../resources/js/board.js"></script>
+<script src="../../resources/js/paint.js"></script>
 <script type = "text/javascript">
     var isStop = true;
     var intervalId;
     //Объявляем пользователя и массив для отправки
-    var clientID = "user";
+    var clientID = "testUser";
     var JSONPostArray = [];
 
 
@@ -78,17 +79,27 @@
         }
     }
 
+    function SingleAjaxQuery()
+    {
+        submitJSON();
+    }
+
+
     var canvas = document.getElementById('Board');
     var isPainting = false;
 
     canvas.addEventListener("mousemove", doMouseMove, false);
     canvas.addEventListener("mousedown", doMouseDown, false);
     canvas.addEventListener("mouseup", doMouseUp, false);
+    canvas.addEventListener("mouseout", doMouseOut);
     var context = canvas.getContext('2d');
 
 
     context.lineWidth = 5;
 
+    function doMouseOut(eventObject){
+        isPainting = false;
+    }
 
     function doMouseMove(eventObject) {
         var mouse = getMousePos(canvas, eventObject);
@@ -96,7 +107,7 @@
 
         context.lineTo(mouse.x, mouse.y);
         context.stroke();
-            addToJSONArray("MOVE", mouse.x, mouse.y);
+            addToJSONArray(clientID, "MOVE", mouse.x, mouse.y);
         }
         $("#mouseXYSpan").html("X: " + mouse.x + "   Y: " + mouse.y + "isPainting - "+ isPainting);
     }
@@ -108,13 +119,14 @@
         context.moveTo(mouse.x, mouse.y);
         isPainting = true;
 
-        addToJSONArray("START", mouse.x, mouse.y);
+        addToJSONArray(clientID, "START", mouse.x, mouse.y);
     }
 
     function doMouseUp(eventObject) {
         isPainting = false;
         //console.log(JSON.stringify(JSONPostArray));
         submitRealJSON(JSON.stringify(JSONPostArray));
+        JSONPostArray = [];
     }
 
 
@@ -122,26 +134,29 @@
     function ClearCanvas() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
+        clearBoard();
         }
 
 
-     function addToJSONArray(type, x, y) {
+     function addToJSONArray(clientID, type, x, y) {
          console.log(type + x + y);
 
-         JSONPostArray.push({
-             "clientID": clientID,
+         var value = {
+             "clientId": clientID,
              "type": type,
-             "X": x,
-             "Y": y
-             }
+             "x": x.toString(),
+             "y": y.toString()
+         }
+         JSONPostArray.push(
+             value
          );
      }
 
     function getMousePos(canvas, evt) {
         var rect = canvas.getBoundingClientRect();
         return {
-            x: evt.clientX - rect.left - 6,
-            y: evt.clientY - rect.top - 6
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
         };
     }
 
