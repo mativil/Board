@@ -50,6 +50,7 @@ function submitRealJSON(JSONArray) {
             xhr.setRequestHeader("Content-Type", "application/json");
         },
         success: function (info) {
+            console.log(info);
             paintAnotherOne(info);
             //$("#result").append(info[1].clientId + "<br>");
         }

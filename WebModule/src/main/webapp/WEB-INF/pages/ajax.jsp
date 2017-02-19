@@ -79,6 +79,17 @@
         }
     }
 
+    //¬от тут мы каждую секунду стучимс€ на сервер
+    var ajaxIntervalId = setInterval(synchronizeData, 200);
+
+     function synchronizeData() {
+            if(!JSONPostArray.length) {
+                addToJSONArray(clientID, "NONE", 0, 0);
+            }
+            submitRealJSON(JSON.stringify(JSONPostArray));
+            JSONPostArray = [];
+    }
+
     function SingleAjaxQuery()
     {
         submitJSON();
@@ -87,6 +98,16 @@
 
     var canvas = document.getElementById('Board');
     var isPainting = false;
+
+    var myPrevPoint = {
+        x : 0,
+        y : 0
+    };
+
+    var anotherPrevPoint = {
+        x : 0,
+        y : 0
+    };
 
     canvas.addEventListener("mousemove", doMouseMove, false);
     canvas.addEventListener("mousedown", doMouseDown, false);
@@ -125,8 +146,10 @@
     function doMouseUp(eventObject) {
         isPainting = false;
         //console.log(JSON.stringify(JSONPostArray));
+        /*
         submitRealJSON(JSON.stringify(JSONPostArray));
         JSONPostArray = [];
+        */
     }
 
 
