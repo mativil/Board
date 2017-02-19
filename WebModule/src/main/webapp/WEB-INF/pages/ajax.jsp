@@ -33,7 +33,7 @@
     <br /><span id="mouseXYSpan"></span>
     </div>
     <br> <br> ${message} 123<br> <br>
-    <input type="button" id = "clearButton" type="button" value="Очистить" onClick="ClearCanvas()"></button>
+    <input type="button" id = "clearButton" type="button" value="Очистить" onClick="clearBoard()"></button>
     <br>
     <input type="button" id = "stopButton" type="button" value="Хватит!!!" onClick="StopOrContinue()"></button>
     <input type="button" id = "singleAjaxButton" type="button" value="Ну мам, ну один Ajax запросик" onClick="SingleAjaxQuery()"></button>
@@ -125,12 +125,15 @@
     function doMouseMove(eventObject) {
         var mouse = getMousePos(canvas, eventObject);
         if (isPainting) {
+         context.moveTo(myPrevPoint.x, myPrevPoint.y);
 
         context.lineTo(mouse.x, mouse.y);
         context.stroke();
             addToJSONArray(clientID, "MOVE", mouse.x, mouse.y);
         }
         $("#mouseXYSpan").html("X: " + mouse.x + "   Y: " + mouse.y + "isPainting - "+ isPainting);
+        myPrevPoint.x = mouse.x;
+        myPrevPoint.y = mouse.y;
     }
 
 
@@ -141,6 +144,8 @@
         isPainting = true;
 
         addToJSONArray(clientID, "START", mouse.x, mouse.y);
+        myPrevPoint.x = mouse.x;
+        myPrevPoint.y = mouse.y;
     }
 
     function doMouseUp(eventObject) {
@@ -152,12 +157,16 @@
         */
     }
 
+    function clearBoard() {
 
+        $.ajax({
+            url: '/board/clear'
+        });
+    }
 
     function ClearCanvas() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
-        clearBoard();
         }
 
 
@@ -207,15 +216,21 @@
         {
             var item = dataArray[i];
             var result = toCanvasCoord(canvas.width, canvas.height, item.x, item.y);
-            console.log(item);
+            //console.log(item);
             switch (item.type)
             {
                 case "START":
-                    context.moveTo(result.x, result.y);
+                    anotherPrevPoint.x = result.x;
+                    anotherPrevPoint.y = result.y;
+                    context.moveTo(anotherPrevPoint.x, anotherPrevPoint.y);
                     break;
                 case "MOVE":
+                    //context.moveTo(anotherPrevPoint.x, anotherPrevPoint.y);
                     context.lineTo(result.x, result.y);
                     context.stroke();
+                    break;
+                case "CLEAR":
+                    ClearCanvas();
                     break;
                 default: break;
             }

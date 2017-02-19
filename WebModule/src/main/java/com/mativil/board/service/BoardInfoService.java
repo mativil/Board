@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface BoardInfoService {
     public List<DrawInfo> setDataAndGetResult(List<DrawInfo> newInfoList);
+    public void clearData();
 }

@@ -25,8 +25,6 @@ public class BoardController {
     @Autowired
     private BoardInfoService boardInfoService;
 
-    List<DrawInfo> list = new ArrayList<DrawInfo>();
-
     @RequestMapping("/")
     public ModelAndView helloAjaxTest() {
         return new ModelAndView("ajax", "message", "Тестируем запросы к Ajax, отсылаемые каждую секунду");
@@ -44,12 +42,15 @@ public class BoardController {
             produces = "application/json", consumes = "application/json")
     @ResponseBody public List<DrawInfo> getJSONData(@RequestBody List<DrawInfo> info) {
         //info.get(0).setClientId("Vasya");
+        String test;
             List<DrawInfo> result = boardInfoService.setDataAndGetResult(info);
+            if(result.size() > 0)
+                test = "1";
             return result;
     }
 
     @RequestMapping(value="/board/clear")
     public void clearData() {
-        list.clear();
+        boardInfoService.clearData();
     }
 }
