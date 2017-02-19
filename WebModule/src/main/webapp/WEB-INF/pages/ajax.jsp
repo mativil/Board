@@ -225,9 +225,11 @@
                     context.moveTo(anotherPrevPoint.x, anotherPrevPoint.y);
                     break;
                 case "MOVE":
-                    //context.moveTo(anotherPrevPoint.x, anotherPrevPoint.y);
+                    context.moveTo(anotherPrevPoint.x, anotherPrevPoint.y);
                     context.lineTo(result.x, result.y);
                     context.stroke();
+                    anotherPrevPoint.x = result.x;
+                    anotherPrevPoint.y = result.y;
                     break;
                 case "CLEAR":
                     ClearCanvas();
