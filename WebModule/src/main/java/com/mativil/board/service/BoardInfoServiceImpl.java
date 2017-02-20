@@ -43,7 +43,7 @@ public class BoardInfoServiceImpl implements BoardInfoService {
             if(result.size() > 0)
             test = "2";
         }
-        return result;
+       return result;
     }
 
     private List<DrawInfo> getSubList(int fromIndex, int forIndex, String clientId)

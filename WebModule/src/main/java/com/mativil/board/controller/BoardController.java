@@ -25,9 +25,14 @@ public class BoardController {
     @Autowired
     private BoardInfoService boardInfoService;
 
-    @RequestMapping("/board")
-    public ModelAndView helloAjaxTest() {
+    @RequestMapping("/test")
+    public ModelAndView getTestPage() {
         return new ModelAndView("ajax", "message", "Тестируем запросы к Ajax, отсылаемые каждую секунду");
+    }
+
+    @RequestMapping("/")
+    public String getIndexPage() {
+        return "board";
     }
 
 
