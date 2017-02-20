@@ -10,7 +10,7 @@ var JSONPostArray = [];
 //Вот тут мы каждую секунду стучимся на сервер
 var ajaxIntervalId = setInterval(synchronizeData, ajaxMillisecondsTime);
 
-var ajaxMillisecondsTime = 200;
+var ajaxMillisecondsTime = 100;
 
 var canvas = document.getElementById('draw');
 var isPainting = false;
@@ -64,11 +64,6 @@ var context = canvas.getContext('2d');
 context.lineCap = 'round';
 
 context.lineWidth = 5;
-
-var img = new Image();
-img.onload = function(){
-    context.drawImage(img, 0, 0, img.width, img.height);
-};
 
 
 function doMouseOut(eventObject){
