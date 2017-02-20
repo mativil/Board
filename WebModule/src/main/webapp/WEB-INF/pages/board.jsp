@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title><c:out value="Доска для рисования"/></title>
+	<title>Доска для рисования"</title>
 	<link rel="stylesheet" href="../../resources/css/bootstrap.css"  type="text/css">
 	<style type="text/css">
 		.draw

@@ -1,6 +1,8 @@
 package com.mativil.board.service;
 
+import com.mativil.board.DAO.DrawInfoDAO;
 import com.mativil.board.model.DrawInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,12 +18,20 @@ public class BoardInfoServiceImpl implements BoardInfoService {
     private Map<String, Integer> usersState;
     private List<DrawInfo> actions;
 
+    @Autowired
+    private DrawInfoDAO drawInfoDAO;
+
     public BoardInfoServiceImpl() {
-        clearData();
+        usersState = new HashMap<String, Integer>();
+        actions = new ArrayList<DrawInfo>();
+        //clearData();
+        //actions.addAll(drawInfoDAO.findAll());
     }
 
     @Override
     public List<DrawInfo> setDataAndGetResult(List<DrawInfo> newInfoList) {
+        if(actions.size() == 0)
+            actions.addAll(drawInfoDAO.findAll());
         boolean isJustListen = false;
         String test = "0";
         if(newInfoList.size() == 1 && newInfoList.get(0).getType().equals("NONE"))
@@ -37,7 +47,12 @@ public class BoardInfoServiceImpl implements BoardInfoService {
         List<DrawInfo> result = getSubList(prevStateId, stateId, user);
         usersState.put(user, actions.size());
         if(!isJustListen)
-        actions.addAll(newInfoList);
+            for(DrawInfo drawInfo:newInfoList)
+            {
+                drawInfoDAO.insert(drawInfo);
+                actions.add(drawInfo);
+            }
+        //actions.addAll(newInfoList);
         if(test.equals("1"))
         {
             if(result.size() > 0)
@@ -61,6 +76,7 @@ public class BoardInfoServiceImpl implements BoardInfoService {
     {
         usersState = new HashMap<String, Integer>();
         actions = new ArrayList<DrawInfo>();
+        drawInfoDAO.deleteAll();
         actions.add(new DrawInfo("ADMIN", "CLEAR", 0, 0));
     }
 }
