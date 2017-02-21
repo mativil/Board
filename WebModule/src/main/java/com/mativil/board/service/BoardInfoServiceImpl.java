@@ -2,6 +2,7 @@ package com.mativil.board.service;
 
 import com.mativil.board.DAO.DrawInfoDAO;
 import com.mativil.board.model.DrawInfo;
+import com.mativil.board.utils.ValidateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,21 +18,29 @@ import java.util.Map;
 public class BoardInfoServiceImpl implements BoardInfoService {
     private Map<String, Integer> usersState;
     private List<DrawInfo> actions;
+    private boolean firstStep;
 
     @Autowired
     private DrawInfoDAO drawInfoDAO;
 
+    @Autowired
+    private ValidateData validateData;
+
     public BoardInfoServiceImpl() {
         usersState = new HashMap<String, Integer>();
         actions = new ArrayList<DrawInfo>();
-        //clearData();
-        //actions.addAll(drawInfoDAO.findAll());
+        firstStep = true;
     }
 
     @Override
     public List<DrawInfo> setDataAndGetResult(List<DrawInfo> newInfoList) {
-        if(actions.size() == 0)
+        //считаем это первой итерацией
+        if(actions.size() == 0 && firstStep)
+        {
+            validateData.validateDatabase();
             actions.addAll(drawInfoDAO.findAll());
+            firstStep = false;
+        }
         boolean isJustListen = false;
         String test = "0";
         if(newInfoList.size() == 1 && newInfoList.get(0).getType().equals("NONE"))

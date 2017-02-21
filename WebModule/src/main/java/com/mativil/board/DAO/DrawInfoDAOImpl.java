@@ -5,6 +5,7 @@ import com.mativil.board.DrawInfoRowMapper;
 import com.mativil.board.model.DrawInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,22 +22,28 @@ public class DrawInfoDAOImpl implements DrawInfoDAO{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
     public void insert(DrawInfo drawInfo){
 
+        //Приходится так делать, т.к в стандарте SQL92 нет утвержденной записи автоинкремента
+        int maxId = getMaxId();
+
         String sql = "INSERT INTO DRAWINFO " +
-                "(CLIENTID, TYPE, X, Y) VALUES (?, ?, ?, ?)";
+                "(ID, CLIENTID, TYPE, X, Y) VALUES (?, ?, ?, ?, ?)";
 
         jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql, new Object[] {
-                drawInfo.getClientId(), drawInfo.getType(), drawInfo.getX(), drawInfo.getY()
+                maxId, drawInfo.getClientId(), drawInfo.getType(), drawInfo.getX(), drawInfo.getY()
         });
     }
 
+    public int getMaxId() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        String query = "select coalesce(max(id), 0) from drawinfo";
+        int maxId = jdbcTemplate.queryForObject(
+                query, Integer.class);
+        return maxId + 1;
+    }
     public DrawInfo findById(int id) {
         String sql = "SELECT * FROM DRAWINFO WHERE ID = ?";
         jdbcTemplate = new JdbcTemplate(dataSource);
