@@ -53,7 +53,7 @@ public class BoardInfoServiceImpl implements BoardInfoService {
         if(!isJustListen)
             for(DrawInfo drawInfo:newInfoList)
             {
-                drawInfoDAO.insert(drawInfo);
+                //drawInfoDAO.insert(drawInfo);
                 actions.add(drawInfo);
             }
        return result;
@@ -75,6 +75,6 @@ public class BoardInfoServiceImpl implements BoardInfoService {
         usersState = new HashMap<String, Integer>();
         actions = new ArrayList<DrawInfo>();
         drawInfoDAO.deleteAll();
-        actions.add(new DrawInfo("ADMIN", "CLEAR", 0, 0));
+        actions.add(DrawInfo.getCleanDrawInfo());
     }
 }

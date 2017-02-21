@@ -30,7 +30,7 @@ public class BoardController {
         return new ModelAndView("ajax", "message", "Тестируем запросы к Ajax, отсылаемые каждую секунду");
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/board")
     public String getIndexPage() {
         return "board";
     }

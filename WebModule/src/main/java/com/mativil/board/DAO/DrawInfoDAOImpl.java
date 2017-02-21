@@ -1,11 +1,10 @@
 package com.mativil.board.DAO;
 import javax.sql.DataSource;
 
-import com.mativil.board.DrawInfoRowMapper;
+import com.mativil.board.utils.DrawInfoRowMapper;
 import com.mativil.board.model.DrawInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.Map;
 public class DrawInfoDAOImpl implements DrawInfoDAO{
     @Autowired
     private DataSource dataSource;
-    @Autowired
+
     private JdbcTemplate jdbcTemplate;
 
     public void insert(DrawInfo drawInfo){

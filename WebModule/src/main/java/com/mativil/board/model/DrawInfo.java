@@ -60,4 +60,9 @@ public class DrawInfo {
                 ", y=" + y +
                 '}';
     }
+
+    public static DrawInfo getCleanDrawInfo()
+    {
+        return new DrawInfo("ADMIN", "CLEAR", 0, 0);
+    }
 }

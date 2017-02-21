@@ -1,4 +1,4 @@
-package com.mativil.board;
+package com.mativil.board.utils;
 
 import com.mativil.board.model.DrawInfo;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,12 +18,6 @@ public class DrawInfoRowMapper implements RowMapper {
         drawInfo.setX(rs.getDouble("X"));
         drawInfo.setY(rs.getDouble("Y"));
         return drawInfo;
-        /*
-        employee.setId(rs.getInt("ID"));
-        employee.setName(rs.getString("NAME"));
-        employee.setAge(rs.getInt("AGE"));
-        return employee;
-        */
     }
 
 }
