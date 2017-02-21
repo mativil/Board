@@ -42,13 +42,8 @@ public class BoardInfoServiceImpl implements BoardInfoService {
             firstStep = false;
         }
         boolean isJustListen = false;
-        String test = "0";
         if(newInfoList.size() == 1 && newInfoList.get(0).getType().equals("NONE"))
             isJustListen = true;
-        else
-        {
-            test = "1";
-        }
         String user = newInfoList.get(0).getClientId();
         int prevStateId = usersState.get(user) == null ? 0 : usersState.get(user);
         usersState.put(user, actions.size());
@@ -61,12 +56,6 @@ public class BoardInfoServiceImpl implements BoardInfoService {
                 drawInfoDAO.insert(drawInfo);
                 actions.add(drawInfo);
             }
-        //actions.addAll(newInfoList);
-        if(test.equals("1"))
-        {
-            if(result.size() > 0)
-            test = "2";
-        }
        return result;
     }
 

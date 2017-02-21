@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Доска для рисования"</title>
-	<link rel="stylesheet" href="../../resources/css/bootstrap.css"  type="text/css">
+	<link rel="stylesheet" href="../../resources/bootstrap/css/bootstrap.css"  type="text/css">
 	<style type="text/css">
 		.draw
 		{
@@ -22,7 +22,7 @@
 </head>
 <body>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="../../resources/js/bootstrap.js"></script>
+<script src="../../resources/bootstrap/js/bootstrap.js"></script>
 
 	<!--Header-->
 	<nav class="navbar navbar-inverse">
